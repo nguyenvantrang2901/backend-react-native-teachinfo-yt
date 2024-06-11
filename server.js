@@ -3,6 +3,7 @@ import morgan from "morgan"
 import cors from "cors"
 import colors from "colors"
 import dotevn from "dotenv"
+import connectDb from "./config/db.js"
 
 //import router
 import testRouter from "./routes/testRouter.js"
@@ -10,6 +11,9 @@ import testRouter from "./routes/testRouter.js"
 
 //dotenv conffig
 dotevn.config()
+
+//connect database with monggodb
+connectDb()
 
 const app = express()
 //middlewares
