@@ -4,17 +4,21 @@ import cors from "cors"
 import colors from "colors"
 import dotevn from "dotenv"
 
-const app = express()
+//import router
+import testRouter from "./routes/testRouter.js"
+
 
 //dotenv conffig
 dotevn.config()
 
+const app = express()
 //middlewares
 app.use(morgan("dev"))
 app.use(express.json())
 app.use(cors())
 
 //router
+app.use("/api/v1", testRouter)
 app.get("/",(req, res, next)=>{
     return res.status(200).send("Xin chào đại ca Haofng YTtan")
 })
