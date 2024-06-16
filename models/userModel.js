@@ -32,5 +32,5 @@ const userSchema = new mongoose.Schema({
     },
 },{timestamps: true})
 
-export const User = mongoose.nodel("Users", userSchema)
-
+export const userModel = mongoose.model("Users", userSchema)
+export default userModel

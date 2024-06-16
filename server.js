@@ -7,7 +7,7 @@ import connectDb from "./config/db.js"
 
 //import router
 import testRouter from "./routes/testRouter.js"
-
+import userRouter from "./routes/userRouter.js"
 
 //dotenv conffig
 dotevn.config()
@@ -23,7 +23,8 @@ app.use(cors())
 
 //router
 app.use("/api/v1", testRouter)
-app.get("/",(req, res, next)=>{
+app.use("/api/v1/user", userRouter)
+app.use("/",(req, res, next)=>{
     return res.status(200).send("Xin chào đại ca Haofng YTtan")
 })
 
