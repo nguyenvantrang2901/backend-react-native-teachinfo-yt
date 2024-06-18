@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import bcrypt from "bcryptjs"
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -31,6 +32,19 @@ const userSchema = new mongoose.Schema({
         type: String
     },
 },{timestamps: true})
+
+
+//hash password
+//chuyển đổi mật khẩu 
+userSchema.pre('save', async function(){
+    this.password = await bcrypt.hash(this.password, 10)
+})
+
+//compare password
+//convert mật khẩu để so sánh: dùng cho đăng nhập
+userSchema.methods.comparePassword = async function(plainPassword){
+    return await bcrypt.compare(plainPassword, this.password)
+}
 
 export const userModel = mongoose.model("Users", userSchema)
 export default userModel
