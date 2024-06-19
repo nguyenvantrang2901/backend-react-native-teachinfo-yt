@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import bcrypt from "bcryptjs"
+import JWT from "jsonwebtoken"
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -44,6 +45,11 @@ userSchema.pre('save', async function(){
 //convert mật khẩu để so sánh: dùng cho đăng nhập
 userSchema.methods.comparePassword = async function(plainPassword){
     return await bcrypt.compare(plainPassword, this.password)
+}
+
+//JWT
+userSchema.methods.generateToken = function(){
+    return JWT.sign({_id: this._id}, process.env.JWT_SECRET, {expiresIn: '7d'})
 }
 
 export const userModel = mongoose.model("Users", userSchema)

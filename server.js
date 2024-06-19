@@ -4,6 +4,7 @@ import cors from "cors"
 import colors from "colors"
 import dotevn from "dotenv"
 import connectDb from "./config/db.js"
+import cookieParser from "cookie-parser"
 
 //import router
 import testRouter from "./routes/testRouter.js"
@@ -20,6 +21,7 @@ const app = express()
 app.use(morgan("dev"))
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 
 //router
 app.use("/api/v1", testRouter)
@@ -33,5 +35,5 @@ const PORT = process.env.PORT || 3000
 
 //listen
 app.listen(PORT,()=>{
-    console.log(`Server is running on port ${process.env.PORT}`)
+    console.log(`Server is running on port ${process.env.PORT} on ${process.env.NODE_ENV}`)
 })

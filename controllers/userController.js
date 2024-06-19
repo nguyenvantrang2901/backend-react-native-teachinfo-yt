@@ -69,16 +69,69 @@ export const loginController = async (req, res) => {
                 message: "Invalid Credentials"
             })
         }
-        res.status(200).send({
+        const token = user.generateToken()
+        res.status(200)
+        //cookie đc lưu trữ trong 7 ngày
+        .cookie("token", token, {
+            expires: new Date(Date.now() + 7*24*60*60*1000),
+            secure: process.env.NODE_ENV === "development" ? true : false,
+            httpOnly: process.env.NODE_ENV === "development" ? true : false,
+            sameSite: process.env.NODE_ENV === "development" ? true : false
+        })
+        .send({
             success: true,
             message: "Login Successfully",
-            data: user
+            token: token,
+            data: user,
         })
     } catch (error) {
         console.log(error)
         res.status(500).send({
             success: false,
             message: "API Login Error",
+            error
+        })
+    }
+}
+
+//get user
+export const getUserProfileController = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user._id)
+        res.status(200).send({
+            success: true,
+            message: "User profile fetched successflly",
+            data: user
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "API Get User Profile Error",
+            error
+        })
+    }
+}
+
+//Logout
+export const logoutController = async (req, res) =>{
+    try {
+        res.status(200)
+        .cookie("token","",{
+            expires: new Date(Date.now()),
+            secure: process.env.NODE_ENV === "development" ? true : false,
+            httpOnly: process.env.NODE_ENV === "development" ? true : false,
+            sameSite: process.env.NODE_ENV === "development" ? true : false
+        })
+        .send({
+            success: true,
+            message: "Logout successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "API Logout Error",
             error
         })
     }
